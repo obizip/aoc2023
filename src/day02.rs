@@ -64,8 +64,8 @@ fn parse_cubes(i: &str) -> IResult<&str, Cubes> {
 }
 
 fn parse_grab(i: &str) -> IResult<&str, Grab> {
-    let (rest, cubes) = separated_list0(char(','), parse_cubes)(i)?;
-    Ok((rest, cubes))
+    let (rest, grab) = separated_list0(char(','), parse_cubes)(i)?;
+    Ok((rest, grab))
 }
 
 pub fn parse_game(i: &str) -> IResult<&str, Game> {
