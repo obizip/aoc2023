@@ -6,7 +6,7 @@ use std::io::{BufRead, BufReader};
 enum Kind {
     Number(char),
     Symbol(char),
-    NotSymbol
+    NotSymbol,
 }
 
 type Engine = Vec<Vec<Kind>>;
@@ -22,8 +22,8 @@ fn char_to_kind(c: char) -> Kind {
 fn exists_symbol(engine: &Engine, (x_begin, x_end): (usize, usize), y: usize) -> bool {
     let nrows = engine.len() as isize;
     let ncols = engine[y].len() as isize;
-    let left  = x_begin as isize- 1;
-    let right = x_end  as isize + 1;
+    let left = x_begin as isize - 1;
+    let right = x_end as isize + 1;
     let up = y as isize - 1;
     let down = y as isize + 1;
 
@@ -40,11 +40,15 @@ fn exists_symbol(engine: &Engine, (x_begin, x_end): (usize, usize), y: usize) ->
     false
 }
 
-fn get_around_asts(engine: &Engine, (x_begin, x_end): (usize, usize), y: usize) -> Vec<(usize, usize)> {
+fn get_around_asts(
+    engine: &Engine,
+    (x_begin, x_end): (usize, usize),
+    y: usize,
+) -> Vec<(usize, usize)> {
     let nrows = engine.len() as isize;
     let ncols = engine[y].len() as isize;
-    let left  = x_begin as isize- 1;
-    let right = x_end  as isize + 1;
+    let left = x_begin as isize - 1;
+    let right = x_end as isize + 1;
     let up = y as isize - 1;
     let down = y as isize + 1;
 
@@ -53,7 +57,7 @@ fn get_around_asts(engine: &Engine, (x_begin, x_end): (usize, usize), y: usize) 
     for ix in left..=right {
         for iy in up..=down {
             if 0 <= ix && ix < nrows && 0 <= iy && iy < ncols {
-                if let Kind::Symbol('*') = engine[iy as usize][ix as usize]{
+                if let Kind::Symbol('*') = engine[iy as usize][ix as usize] {
                     asts.push((ix as usize, iy as usize));
                 }
             }
@@ -69,7 +73,7 @@ pub fn solve1(file: File) {
     let mut engine: Vec<Vec<Kind>> = Vec::new();
     for line in reader.lines() {
         let line = line.unwrap();
-        engine.push(line.chars().map(|c| char_to_kind(c)).collect());
+        engine.push(line.chars().map(char_to_kind).collect());
     }
     let mut sum = 0;
     let ncols = engine[0].len();
@@ -112,7 +116,7 @@ pub fn solve2(file: File) {
     let mut engine: Vec<Vec<Kind>> = Vec::new();
     for line in reader.lines() {
         let line = line.unwrap();
-        engine.push(line.chars().map(|c| char_to_kind(c)).collect());
+        engine.push(line.chars().map(char_to_kind).collect());
     }
     let mut sum = 0;
     let ncols = engine[0].len();
@@ -132,8 +136,7 @@ pub fn solve2(file: File) {
                     for ast in asts {
                         if let Some(arounds) = asts_map.get_mut(&ast) {
                             arounds.push(nums.parse::<usize>().unwrap());
-                        }
-                        else {
+                        } else {
                             asts_map.insert(ast, vec![nums.parse::<usize>().unwrap()]);
                         }
                     }
@@ -143,16 +146,15 @@ pub fn solve2(file: File) {
             } else if !nums.is_empty() {
                 let x_begin = x - nums.len();
                 let x_end = x - 1;
-                    let asts = get_around_asts(&engine, (x_begin, x_end), y);
-                    for ast in asts {
-                        if let Some(arounds) = asts_map.get_mut(&ast) {
-                            arounds.push(nums.parse::<usize>().unwrap());
-                        }
-                        else {
-                            asts_map.insert(ast, vec![nums.parse::<usize>().unwrap()]);
-                        }
+                let asts = get_around_asts(&engine, (x_begin, x_end), y);
+                for ast in asts {
+                    if let Some(arounds) = asts_map.get_mut(&ast) {
+                        arounds.push(nums.parse::<usize>().unwrap());
+                    } else {
+                        asts_map.insert(ast, vec![nums.parse::<usize>().unwrap()]);
                     }
-                    nums = String::new();
+                }
+                nums = String::new();
             }
             x += 1
         }
