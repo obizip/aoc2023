@@ -7,6 +7,7 @@ use std::path::Path;
 use std::path::PathBuf;
 mod day01;
 mod day02;
+mod day03;
 
 fn main() -> Result<(), std::io::Error> {
     let mut args = env::args();
@@ -38,6 +39,10 @@ fn main() -> Result<(), std::io::Error> {
         (day02::solve1 as fn(File), "day2"),
         (day02::solve2 as fn(File), "day2.ex"),
         (day02::solve2 as fn(File), "day2"),
+        (day03::solve1 as fn(File), "day3.ex"),
+        (day03::solve1 as fn(File), "day3"),
+        (day03::solve2 as fn(File), "day3.ex"),
+        (day03::solve2 as fn(File), "day3"),
     ];
 
     if solve_all {
