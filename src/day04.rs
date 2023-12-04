@@ -1,16 +1,7 @@
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fs::File;
-use std::hash::BuildHasher;
-use std::hash::Hash;
 use std::io::{BufRead, BufReader};
-
-fn common_set<T: Eq + Hash + Clone + Copy, S: BuildHasher + Default>(
-    a: &HashSet<T, S>,
-    b: &HashSet<T, S>,
-) -> HashSet<T, S> {
-    HashSet::from_iter(a.into_iter().filter(|key| b.contains(&key)).map(|n| *n))
-}
 
 pub fn solve1(file: File) {
     println!("[day03 part1]");
@@ -22,7 +13,7 @@ pub fn solve1(file: File) {
         let pos_bar = line.find('|').unwrap();
         let (win_nums, mynums) = (&line[pos_colon + 1..pos_bar], &line[pos_bar + 1..]);
         let to_set = |str_nums: &str| -> HashSet<usize> {
-            HashSet::from_iter(str_nums.split(' ').into_iter().filter_map(|num| {
+            HashSet::from_iter(str_nums.split(' ').filter_map(|num| {
                 if let Ok(num) = num.parse::<usize>() {
                     Some(num)
                 } else {
@@ -36,7 +27,6 @@ pub fn solve1(file: File) {
         if count > 0 {
             points = 2_i32.pow(count as u32 - 1);
         }
-        // println!("P:{points}");
         sum += points;
     }
     println!("  {sum}");
@@ -52,7 +42,7 @@ pub fn solve2(file: File) {
         let pos_bar = line.find('|').unwrap();
         let (win_nums, mynums) = (&line[pos_colon + 1..pos_bar], &line[pos_bar + 1..]);
         let to_set = |str_nums: &str| -> HashSet<usize> {
-            HashSet::from_iter(str_nums.split(' ').into_iter().filter_map(|num| {
+            HashSet::from_iter(str_nums.split(' ').filter_map(|num| {
                 if let Ok(num) = num.parse::<usize>() {
                     Some(num)
                 } else {
@@ -73,10 +63,10 @@ pub fn solve2(file: File) {
             match copies.get_mut(&k) {
                 Some(n) => *n += ninstance,
                 None => {
-                    copies.insert(k as usize, 1 + ninstance);
+                    copies.insert(k, 1 + ninstance);
                 }
             }
         }
     }
-    println!("  {}", copies.iter().map(|(_, val)| val).sum::<usize>());
+    println!("  {}", copies.values().sum::<usize>());
 }
