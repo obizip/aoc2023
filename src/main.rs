@@ -8,6 +8,7 @@ use std::path::PathBuf;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 fn main() -> Result<(), std::io::Error> {
     let mut args = env::args();
@@ -22,12 +23,9 @@ fn main() -> Result<(), std::io::Error> {
     }
 
     let homedir = home_dir().unwrap();
-    let inputdir: PathBuf = [
-        homedir,
-        Path::new("Code/github.com/obizip/aoc2023/inputs").to_path_buf(),
-    ]
-    .iter()
-    .collect();
+    let inputdir: PathBuf = [homedir, Path::new("Documents/aoc2023/inputs").to_path_buf()]
+        .iter()
+        .collect();
     let input = |filename: &str| File::open(inputdir.join(filename)).unwrap();
 
     let days = vec![
@@ -43,6 +41,10 @@ fn main() -> Result<(), std::io::Error> {
         (day03::solve1 as fn(File), "day3"),
         (day03::solve2 as fn(File), "day3.ex"),
         (day03::solve2 as fn(File), "day3"),
+        (day04::solve1 as fn(File), "day4.ex"),
+        (day04::solve1 as fn(File), "day4"),
+        (day04::solve2 as fn(File), "day4.ex"),
+        (day04::solve2 as fn(File), "day4"),
     ];
 
     if solve_all {
