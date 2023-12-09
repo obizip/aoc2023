@@ -13,6 +13,7 @@ mod day05;
 mod day06;
 mod day07;
 mod day08;
+mod day09;
 
 fn main() -> Result<(), std::io::Error> {
     let mut args = env::args();
@@ -65,6 +66,10 @@ fn main() -> Result<(), std::io::Error> {
         (day08::solve1 as fn(File), "day8"),
         (day08::solve2 as fn(File), "day8.2.ex"),
         (day08::solve2 as fn(File), "day8"),
+        (day09::solve1 as fn(File), "day9.ex"),
+        (day09::solve1 as fn(File), "day9"),
+        (day09::solve2 as fn(File), "day9.ex"),
+        (day09::solve2 as fn(File), "day9"),
     ];
 
     if solve_all {
